@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/model/SourcesResponse/Source.dart';
 
 class SourceTabWidget extends StatelessWidget
 {
-  final String source;
+  final Source source;
 
   const SourceTabWidget({super.key, required this.source});
 
@@ -16,7 +17,7 @@ class SourceTabWidget extends StatelessWidget
             borderRadius: BorderRadius.circular(25),
             border: Border.all(color: Theme.of(context).colorScheme.primary)
         ),
-        child: Text(source),
+        child: Text(source.name??""),
       ),
     );
   }

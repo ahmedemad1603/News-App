@@ -1,11 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:news_app/model/NewsResponse/Article.dart';
 import 'package:news_app/model/article_model.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class ArticleItemWidget extends StatelessWidget
 {
-  final ArticleModel articleModel;
+  final Article articleModel;
 
   const ArticleItemWidget({super.key, required this.articleModel});
 
@@ -18,7 +19,7 @@ class ArticleItemWidget extends StatelessWidget
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CachedNetworkImage(
-            imageUrl: articleModel.image,
+            imageUrl: articleModel.urlToImage??"",
             width: double.infinity,
             height: MediaQuery.of(context).size.height*0.3,
             placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
@@ -31,11 +32,11 @@ class ArticleItemWidget extends StatelessWidget
             ),
           ),
           const SizedBox(height: 10),
-          Text(articleModel.source, style: Theme.of(context).textTheme.bodySmall),
+          Text(articleModel.source?.name??"", style: Theme.of(context).textTheme.bodySmall),
           const SizedBox(height: 5),
-          Text(articleModel.title, style: Theme.of(context).textTheme.titleMedium),
+          Text(articleModel.title??"", style: Theme.of(context).textTheme.titleMedium),
           const SizedBox(height: 2),
-          Text(timeago.format(articleModel.date), style: Theme.of(context).textTheme.displaySmall)
+          Text(timeago.format(DateTime.parse(articleModel.publishedAt??"")), style: Theme.of(context).textTheme.displaySmall)
         ],
       ),
     );
