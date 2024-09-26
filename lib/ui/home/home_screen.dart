@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen>
       child: Scaffold(
         drawer: CustomDrawer(onTap: selectDrawerWidget),
         appBar: AppBar(
-          title: Text("News App"),
+          title: const Text("News App"),
         ),
         body: selectedWidget,
       ),

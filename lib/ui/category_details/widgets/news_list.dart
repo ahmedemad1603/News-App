@@ -30,18 +30,22 @@ class _NewsListWidgetState extends State<NewsListWidget> {
                   }
                 if(snapshot.hasError || snapshot.data?.status == "error")
                   {
-                    return Column(
-                      children: [
-                        Text(snapshot.data?.message??snapshot.error.toString()),
-                        ElevatedButton(
-                            onPressed: () {
-                              setState(() {
+                    return Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(snapshot.data?.message??snapshot.error.toString()),
+                          ElevatedButton(
+                              onPressed: () {
+                                setState(() {
 
-                              });
-                            },
-                            child: const Text("Try Again")
-                        )
-                      ],
+                                });
+                              },
+                              child: const Text("Try Again")
+                          )
+                        ],
+                      ),
                     );
                   }
                 List<Article> articles = snapshot.data?.articles??[];
