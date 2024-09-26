@@ -22,7 +22,7 @@ class _NewsListWidgetState extends State<NewsListWidget> {
     return Expanded(
       child: TabBarView(
           children: widget.sourceNames.map((source) => FutureBuilder(
-              future: ApiManager.getNews(source.id??""),
+              future: ApiManager.getNews(sourceId: source.id??""),
               builder: (context, snapshot) {
                 if(snapshot.connectionState == ConnectionState.waiting)
                   {
