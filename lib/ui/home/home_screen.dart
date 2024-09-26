@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:news_app/ui/categories/categories_tab.dart';
 import 'package:news_app/ui/category_details/category_details.dart';
 import 'package:news_app/ui/home/widgets/custom_drawer.dart';
+import 'package:news_app/ui/home/widgets/search_tab.dart';
 import 'package:news_app/ui/settings/settings_tab.dart';
 
 class HomeScreen extends StatefulWidget
@@ -40,6 +41,17 @@ class _HomeScreenState extends State<HomeScreen>
         drawer: CustomDrawer(onTap: selectDrawerWidget),
         appBar: AppBar(
           title: const Text("News App"),
+          actions: [
+            IconButton(
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: SearchTab()
+                );
+              },
+              icon: const Icon(Icons.search, size: 30)
+            )
+          ],
         ),
         body: selectedWidget,
       ),

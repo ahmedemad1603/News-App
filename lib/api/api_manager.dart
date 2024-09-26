@@ -23,12 +23,13 @@ class ApiManager
     return sourcesResponse;
   }
 
-  static Future<NewsResponse> getNews(String sourceId) async
+  static Future<NewsResponse> getNews({String? sourceId, String? query}) async
   {
     // ?=&
     Uri newsUrl = Uri.http(baseUrl, "/v2/everything", {
       "apiKey": apiKey,
-      "sources": sourceId
+      "sources": sourceId,
+      "q": query
     });
 
     http.Response response = await http.get(newsUrl);
