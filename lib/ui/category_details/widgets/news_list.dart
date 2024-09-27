@@ -15,14 +15,52 @@ class NewsListWidget extends StatefulWidget
   State<NewsListWidget> createState() => _NewsListWidgetState();
 }
 
-class _NewsListWidgetState extends State<NewsListWidget> {
+class _NewsListWidgetState extends State<NewsListWidget>
+{
+  int selectedIndex = 0;
+  int page = 1;
+  int pageSize = 20;
+  ScrollController scrollController = ScrollController();
+  List<Article> articlesList = [];
+
+  @override
+  void initState()
+  {
+    super.initState();
+    scrollController.addListener(() {
+      if(scrollController.position.atEdge)
+        {
+          if(scrollController.offset != 0)
+            {
+              setState(() {
+                page++;
+                scrollController.animateTo(0, duration: const Duration(microseconds: 300), curve: Curves.easeInOut);
+              });
+            }
+        }
+    });
+  }
+
+  Future<void> loadNews() async
+  {
+    var newArticleList = await ApiManager.getNews(
+        sourceId: widget.sourceNames[selectedIndex].id??"",
+        page: page,
+        pageSize: pageSize
+    );
+    setState(() {
+
+    });
+    articlesList.addAll((newArticleList.articles??[]));
+  }
+
   @override
   Widget build(BuildContext context)
   {
     return Expanded(
       child: TabBarView(
           children: widget.sourceNames.map((source) => FutureBuilder(
-              future: ApiManager.getNews(sourceId: source.id??""),
+              future: ApiManager.getNews(sourceId: source.id??"", page: page, pageSize: pageSize),
               builder: (context, snapshot) {
                 if(snapshot.connectionState == ConnectionState.waiting)
                   {
@@ -49,12 +87,22 @@ class _NewsListWidgetState extends State<NewsListWidget> {
                     );
                   }
                 List<Article> articles = snapshot.data?.articles??[];
-                return ListView.separated(
-                  itemCount: articles.length,
-                  itemBuilder: (context, index) => ArticleItemWidget(
-                      articleModel: articles[index]
+                return RefreshIndicator(
+                  onRefresh: () async
+                  {
+                    setState(()
+                    {
+                      page=1;
+                    });
+                  },
+                  child: ListView.separated(
+                    controller: scrollController,
+                    itemCount: articles.length,
+                    itemBuilder: (context, index) => ArticleItemWidget(
+                        articleModel: articles[index]
+                    ),
+                    separatorBuilder: (context, index) => const SizedBox(height: 10),
                   ),
-                  separatorBuilder: (context, index) => const SizedBox(height: 10),
                 );
               },
           )).toList()
